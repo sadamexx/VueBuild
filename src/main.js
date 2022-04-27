@@ -3,6 +3,11 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 
+// Buefy's components
+import { Input, Field } from "buefy";
+Vue.use(Input);
+Vue.use(Field);
+
 Vue.config.productionTip = false;
 
 new Vue({

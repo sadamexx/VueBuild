@@ -1,19 +1,32 @@
 import axios from "axios";
 
-const token = localStorage.getItem("token"); //moved outside of axios create
+//moved outside of axios create
+
+// export const apiClient = () => {
+//   const token = localStorage.getItem("token");
+//   return axios.create({
+//     baseURL: `https://development.api.teams.wethos.co`,
+//     headers: {
+//       "X-Requested-With": "XMLHttpRequest",
+//       Accept: "application/json", //this line is new
+//       "Content-Type": "application/json",
+//       Authorization: `Bearer ${token}`,
+//     },
+//   });
+// };
 
 const apiClient = axios.create({
-  baseURL: "https://development.api.teams.wethos.co",
+  baseURL: `https://development.api.teams.wethos.co`,
   headers: {
     "X-Requested-With": "XMLHttpRequest",
-    Accept: "application/json", //this line is new
+    Accept: "application/json",
     "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
   },
 });
 
 export default {
   login(credentials) {
-    return apiClient.post("/oath/token", credentials);
+    console.log("login", credentials);
+    return apiClient.post("/oauth/token", credentials);
   },
 };

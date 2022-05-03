@@ -2,50 +2,56 @@
   <div>
     <form @submit.prevent="submitForm">
       <div>
-        <label for="email">Email</label>
-        <input type="email" v-model="email" />
+        <label for="username">Username</label>
+        <input type="text" v-model="username" />
       </div>
       <div>
         <label for="password">Password</label>
         <input type="password" v-model="password" />
       </div>
-      <p v-if="!formIsValid">
-        Please enter a valid email and/or password (must be at least 6
-        characters long).
-      </p>
       <button>Login</button>
     </form>
   </div>
 </template>
 
 <script>
+// import { apiClient } from "../services/axiosCalls";
+import { mapState, mapActions } from "vuex";
+
 export default {
   data() {
     return {
-      email: "",
+      username: "",
       password: "",
-      formIsValid: true,
     };
   },
+  computed: {
+    ...mapState(["loggingIn", "loginError", "accessToken"]),
+  },
   methods: {
+    ...mapActions(["loginUser"]),
     submitForm() {
-      // if (
-      //   this.email === "" ||
-      //   !this.email.includes("@") ||
-      //   this.password.length < 6
-      // ) {
-      //   this.formIsValid = false;
-      //   return;
-      // }
-      this.$store
-        .dispatch("loginUser", (this.email, this.password))
-        .then(() => {
-          this.$router.push({
-            name: "dashboard",
-          });
-        })
+      this.loginUser({
+        grant_type: "password",
+        client_id: "2",
+        client_secret: "GjUJ5tqVliDdTadQDn4eQYQPUtLKjRLICu0qmrTR",
+        scope: "*",
+        username: this.username,
+        password: this.password,
+      })
         .catch((error) => {
           console.log(error);
+        })
+        .then(() => {
+          if (localStorage.getItem("accessToken")) {
+            this.$router.push({
+              name: "dashboard",
+            });
+          } else {
+            this.$router.push({
+              name: "login",
+            });
+          }
         });
     },
   },

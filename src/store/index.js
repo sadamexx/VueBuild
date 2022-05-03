@@ -22,10 +22,12 @@ export default new Vuex.Store({
   },
   actions: {
     loginUser({ commit }, credentials) {
+      console.log(credentials);
       commit("LOGIN_START");
       return apiClient
         .login(credentials)
         .then((response) => {
+          console.log(response);
           localStorage.setItem("accessToken", response.data.access_token);
           commit("UPDATE_ACCESS_TOKEN", response.data.access_token);
           commit("LOGIN_STOP", null);

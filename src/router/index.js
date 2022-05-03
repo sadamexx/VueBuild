@@ -3,6 +3,8 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Dashboard from "../views/Dashboard.vue";
+import NProgress from "nprogress";
+// import store from '../store/index';
 
 Vue.use(VueRouter);
 
@@ -23,6 +25,7 @@ const routes = [
   },
   {
     path: "/login",
+    name: "login",
     component: Login,
   },
   {
@@ -30,12 +33,32 @@ const routes = [
     name: "dashboard",
     component: Dashboard,
   },
+  // {
+  //   path: '/profile',
+  //   name: 'profile',
+  //   component: 'Profile',
+  //   props: true,
+  //   beforeEnter(routeTo, routeFrom, next){
+  //     store.dispatch('profile/fetchProfile')
+  //   }
+  // },
 ];
 
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+});
+
+// starts the progress bar when routing begins
+router.beforeEach((routeTo, routeFrom, next) => {
+  NProgress.start();
+  next();
+});
+
+// ends progress bar when routing is about to end
+router.afterEach(() => {
+  NProgress.done();
 });
 
 export default router;
